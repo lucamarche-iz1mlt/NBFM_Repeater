@@ -1,0 +1,1073 @@
+options:
+  parameters:
+    author: ''
+    catch_exceptions: 'True'
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: ''
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: qt_gui
+    hier_block_src_path: '.:'
+    id: rptr
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: NFM_Repeater
+    window_size: (1000,1000)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 8]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: RSSI
+  id: variable_qtgui_label
+  parameters:
+    comment: ''
+    formatter: None
+    gui_hint: ''
+    label: 'RSSI dBm:'
+    type: raw
+    value: rs
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [288, 872.0]
+    rotation: 0
+    state: true
+- name: buffer
+  id: variable
+  parameters:
+    comment: ''
+    value: '8000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [184, 124.0]
+    rotation: 0
+    state: true
+- name: conf_ctcss
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: ./rptr.ini
+    option: ctcss
+    section: main
+    type: real
+    value: '0.0'
+    writeback: pl_freq
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1040, 148.0]
+    rotation: 0
+    state: true
+- name: conf_freq
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: ./rptr.ini
+    option: freq
+    section: main
+    type: int
+    value: '145000000'
+    writeback: freq
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [400, 148.0]
+    rotation: 0
+    state: true
+- name: conf_hangtime
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: ./rptr.ini
+    option: hangtime
+    section: main
+    type: int
+    value: '1300'
+    writeback: delay
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1200, 148.0]
+    rotation: 0
+    state: true
+- name: conf_offset
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: ./rptr.ini
+    option: offset
+    section: main
+    type: real
+    value: '-60000'
+    writeback: offset
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [552, 148.0]
+    rotation: 0
+    state: true
+- name: conf_squelch
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: ./rptr.ini
+    option: squelch
+    section: main
+    type: real
+    value: '-40'
+    writeback: sq_lvl
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [712, 148.0]
+    rotation: 0
+    state: true
+- name: conf_trxcal
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: ./rptr.ini
+    option: trxcal
+    section: main
+    type: int
+    value: '1400'
+    writeback: oscref
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [880, 148.0]
+    rotation: 0
+    state: true
+- name: ctcss_en
+  id: variable
+  parameters:
+    comment: ''
+    value: rpt.ctcss_en(pl_freq)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1576, 484.0]
+    rotation: 0
+    state: true
+- name: ctcss_status
+  id: variable
+  parameters:
+    comment: ''
+    value: rpt.status(func_ctcssdec)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1728, 196.0]
+    rotation: 0
+    state: enabled
+- name: delay
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: TX Coda ms
+    min_len: '10'
+    orient: QtCore.Qt.Horizontal
+    rangeType: int
+    start: '100'
+    step: '100'
+    stop: '5000'
+    value: conf_hangtime
+    widget: counter
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1200, 12.0]
+    rotation: 0
+    state: enabled
+- name: filter_wide
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: Filter
+    min_len: '50'
+    orient: QtCore.Qt.Horizontal
+    rangeType: int
+    start: '4000'
+    step: '1000'
+    stop: '12000'
+    value: '7500'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1376, 12.0]
+    rotation: 0
+    state: enabled
+- name: freq
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: Freq TX
+    min_len: '100'
+    orient: QtCore.Qt.Horizontal
+    rangeType: int
+    start: '144000000'
+    step: '12500'
+    stop: '1300000000'
+    value: conf_freq
+    widget: counter
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [400, 12.0]
+    rotation: 0
+    state: enabled
+- name: func_bfbusy
+  id: variable_function_probe
+  parameters:
+    block_id: prb_bfbusy
+    comment: ''
+    function_args: ''
+    function_name: level
+    poll_rate: '10'
+    value: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1560, 20.0]
+    rotation: 0
+    state: true
+- name: func_ctcssdec
+  id: variable_function_probe
+  parameters:
+    block_id: prb_ctcssdec
+    comment: ''
+    function_args: ''
+    function_name: level
+    poll_rate: '10'
+    value: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1560, 212.0]
+    rotation: 0
+    state: true
+- name: func_nbfm_busy
+  id: variable_function_probe
+  parameters:
+    block_id: prb_nbfm_busy
+    comment: ''
+    function_args: ''
+    function_name: level
+    poll_rate: '10'
+    value: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1544, 116.0]
+    rotation: 0
+    state: true
+- name: func_rssi
+  id: variable_function_probe
+  parameters:
+    block_id: rssi
+    comment: ''
+    function_args: ''
+    function_name: level
+    poll_rate: '6'
+    value: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [128, 852.0]
+    rotation: 0
+    state: true
+- name: max_dev
+  id: variable
+  parameters:
+    comment: ''
+    value: '5000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [288, 68.0]
+    rotation: 0
+    state: true
+- name: offset
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: Shift RX
+    min_len: '100'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '-10000000'
+    step: '25000'
+    stop: '10000000'
+    value: conf_offset
+    widget: counter
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [552, 12.0]
+    rotation: 0
+    state: enabled
+- name: oscref
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: OSC REF
+    min_len: '10'
+    orient: QtCore.Qt.Horizontal
+    rangeType: int
+    start: '-50000'
+    step: '50'
+    stop: '50000'
+    value: conf_trxcal
+    widget: counter
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [880, 12.0]
+    rotation: 0
+    state: enabled
+- name: pl_freq
+  id: variable_qtgui_chooser
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: PL Tone
+    label0: '0'
+    label1: '1'
+    label2: '2'
+    label3: ''
+    label4: ''
+    labels: '["0.0", "67.0", "71.9", "74.4", "77.0", "79.7", "82.5", "85.4", "88.5",
+      "91.5", "94.8", "97.4", "100.0", "103.5", "107.2", "110.9", "114.8", "118.8",
+      "123.0", "127.3", "131.8", "136.5", "141.3", "146.2", "151.4", "156.7", "162.2",
+      "167.9", "173.8", "179.9", "186.2", "192.8", "203.5", "210.7", "218.1", "225.7",
+      "233.6", "241.8", "250.3"]'
+    num_opts: '0'
+    option0: '0'
+    option1: '1'
+    option2: '2'
+    option3: '3'
+    option4: '4'
+    options: '[0.0, 67.0, 71.9, 74.4, 77.0, 79.7, 82.5, 85.4, 88.5, 91.5, 94.8, 97.4,
+      100.0, 103.5, 107.2, 110.9, 114.8, 118.8, 123.0, 127.3, 131.8, 136.5, 141.3,
+      146.2, 151.4, 156.7, 162.2, 167.9, 173.8, 179.9, 186.2, 192.8, 203.5, 210.7,
+      218.1, 225.7, 233.6, 241.8, 250.3]'
+    orient: Qt.QVBoxLayout
+    type: real
+    value: conf_ctcss
+    widget: combo_box
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1040, 12.0]
+    rotation: 0
+    state: enabled
+- name: pluto_gain
+  id: variable
+  parameters:
+    comment: ''
+    value: rpt.agc(func_rssi)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [288, 752.0]
+    rotation: 0
+    state: true
+- name: ptt
+  id: variable
+  parameters:
+    comment: ''
+    value: rpt.hang(func_bfbusy, delay)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1720, 68.0]
+    rotation: 0
+    state: enabled
+- name: rs
+  id: variable
+  parameters:
+    comment: ''
+    value: rpt.newrssi(func_rssi)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [288, 816.0]
+    rotation: 0
+    state: true
+- name: rx_status
+  id: variable
+  parameters:
+    comment: ''
+    value: rpt.status(func_nbfm_busy)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1720, 132.0]
+    rotation: 0
+    state: enabled
+- name: samp_bf
+  id: variable
+  parameters:
+    comment: ''
+    value: '16000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [296, 12.0]
+    rotation: 0
+    state: enabled
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: samp_bf*9
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [184, 12.0]
+    rotation: 0
+    state: enabled
+- name: shift
+  id: variable
+  parameters:
+    comment: ''
+    value: '15000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [184, 68.0]
+    rotation: 0
+    state: enabled
+- name: sq_lvl
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: Squelch
+    min_len: '100'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '-150'
+    step: '1'
+    stop: '0'
+    value: conf_squelch
+    widget: counter
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [712, 12.0]
+    rotation: 0
+    state: enabled
+- name: analog_ctcss_squelch_ff_0
+  id: analog_ctcss_squelch_ff
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    freq: pl_freq
+    gate: 'False'
+    len: '0'
+    level: '0.015'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    ramp: '0'
+    rate: samp_bf
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1568, 564.0]
+    rotation: 0
+    state: enabled
+- name: analog_nbfm_rx_0
+  id: analog_nbfm_rx
+  parameters:
+    affinity: ''
+    alias: ''
+    audio_rate: samp_bf
+    comment: ''
+    max_dev: max_dev
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    quad_rate: samp_rate
+    tau: '7.5e-6'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [992, 652.0]
+    rotation: 0
+    state: enabled
+- name: analog_nbfm_tx_0
+  id: analog_nbfm_tx
+  parameters:
+    affinity: ''
+    alias: ''
+    audio_rate: samp_bf
+    comment: ''
+    fh: '0'
+    max_dev: max_dev
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    quad_rate: samp_rate
+    tau: '7.5e-6'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2336, 644.0]
+    rotation: 0
+    state: enabled
+- name: analog_pwr_squelch_xx_0
+  id: analog_pwr_squelch_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha: 1e-4
+    comment: ''
+    gate: 'False'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    ramp: '0'
+    threshold: (int)(-ptt)*(100)
+    type: complex
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2616, 652.0]
+    rotation: 0
+    state: enabled
+- name: analog_simple_squelch_cc_0
+  id: analog_simple_squelch_cc
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha: '0.005'
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    threshold: sq_lvl+59
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [760, 668.0]
+    rotation: 0
+    state: enabled
+- name: band_pass_filter_0
+  id: band_pass_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    beta: '6.76'
+    comment: ''
+    decim: '1'
+    gain: '1'
+    high_cutoff_freq: '3500'
+    interp: '1'
+    low_cutoff_freq: '50'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: samp_bf
+    type: interp_fir_filter_fff
+    width: '100'
+    win: window.WIN_HAMMING
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2072, 620.0]
+    rotation: 0
+    state: enabled
+- name: band_pass_filter_0_0
+  id: band_pass_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    beta: '6.76'
+    comment: ''
+    decim: '1'
+    gain: '1'
+    high_cutoff_freq: filter_wide
+    interp: '1'
+    low_cutoff_freq: -filter_wide
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: samp_rate
+    type: fir_filter_ccc
+    width: '2000'
+    win: window.WIN_HAMMING
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [504, 620.0]
+    rotation: 0
+    state: enabled
+- name: band_pass_filter_0_0_0
+  id: band_pass_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    beta: '6.76'
+    comment: ''
+    decim: '1'
+    gain: '1'
+    high_cutoff_freq: filter_wide
+    interp: '1'
+    low_cutoff_freq: -filter_wide
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: samp_rate
+    type: fir_filter_ccc
+    width: '2000'
+    win: window.WIN_HAMMING
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2872, 620.0]
+    rotation: 0
+    state: enabled
+- name: blocks_complex_to_mag_squared_0
+  id: blocks_complex_to_mag_squared
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [712.0, 784]
+    rotation: 270
+    state: true
+- name: blocks_freqshift_cc_0
+  id: blocks_freqshift_cc
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    freq: shift
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    sample_rate: samp_rate
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [272, 668.0]
+    rotation: 0
+    state: enabled
+- name: blocks_nlog10_ff_0
+  id: blocks_nlog10_ff
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    k: '-59'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    n: '10'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [344, 968.0]
+    rotation: 180
+    state: enabled
+- name: blocks_selector_0
+  id: blocks_selector
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    enabled: 'True'
+    input_index: '0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_inputs: '1'
+    num_outputs: '2'
+    output_index: ctcss_en
+    showports: 'True'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1328, 644.0]
+    rotation: 0
+    state: true
+- name: blocks_selector_0_0
+  id: blocks_selector
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    enabled: 'True'
+    input_index: ctcss_en
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_inputs: '2'
+    num_outputs: '1'
+    output_index: '0'
+    showports: 'True'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1840, 644.0]
+    rotation: 0
+    state: true
+- name: filter_fft_low_pass_filter_0
+  id: filter_fft_low_pass_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    beta: '6.76'
+    comment: ''
+    cutoff_freq: '50'
+    decim: '1'
+    gain: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    nthreads: '1'
+    samp_rate: samp_rate
+    type: fff
+    width: '25'
+    win: window.WIN_HAMMING
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [472, 908.0]
+    rotation: 180
+    state: enabled
+- name: iio_pluto_sink_0
+  id: iio_pluto_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    attenuation1: '0'
+    bandwidth: '200000'
+    buffer_size: buffer
+    comment: ''
+    cyclic: 'False'
+    filter: ''
+    filter_source: '''Auto'''
+    fpass: '10000'
+    frequency: (int)(freq)+(oscref)
+    fstop: '40000'
+    len_tag_key: ''
+    samplerate: samp_rate
+    type: fc32
+    uri: uri
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [3144, 620.0]
+    rotation: 0
+    state: enabled
+- name: iio_pluto_source_0
+  id: iio_pluto_source
+  parameters:
+    affinity: ''
+    alias: ''
+    bandwidth: '200000'
+    bbdc: 'True'
+    buffer_size: buffer
+    comment: ''
+    filter: ''
+    filter_source: '''Auto'''
+    fpass: (float)(samp_rate)/(4)
+    frequency: (int)(freq)+(shift)+(oscref)+(offset)
+    fstop: (float)(samp_rate)/(3)
+    gain1: '''manual'''
+    len_tag_key: packet_len
+    manual_gain1: pluto_gain
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    quadrature: 'True'
+    rfdc: 'True'
+    samplerate: samp_rate
+    type: fc32
+    uri: uri
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [0, 596.0]
+    rotation: 0
+    state: true
+- name: prb_bfbusy
+  id: blocks_probe_signal_x
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    type: float
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2012.0, 784]
+    rotation: 270
+    state: enabled
+- name: prb_ctcssdec
+  id: blocks_probe_signal_x
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    type: float
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1840, 548.0]
+    rotation: 0
+    state: enabled
+- name: prb_nbfm_busy
+  id: blocks_probe_signal_x
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    type: float
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1220.0, 512]
+    rotation: 90
+    state: enabled
+- name: qtgui_ledindicator_0_0
+  id: qtgui_ledindicator
+  parameters:
+    affinity: ''
+    alias: ''
+    cellalignment: '1'
+    comment: ''
+    gui_hint: ''
+    label: '"TX"'
+    maxSize: '40'
+    offColor: gray
+    onColor: red
+    position: '1'
+    state: ptt
+    verticalalignment: '3'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1888, 68.0]
+    rotation: 0
+    state: enabled
+- name: qtgui_ledindicator_0_0_0
+  id: qtgui_ledindicator
+  parameters:
+    affinity: ''
+    alias: ''
+    cellalignment: '1'
+    comment: ''
+    gui_hint: ''
+    label: '"RX"'
+    maxSize: '40'
+    offColor: gray
+    onColor: green
+    position: '1'
+    state: rx_status
+    verticalalignment: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1888, 132.0]
+    rotation: 0
+    state: enabled
+- name: qtgui_ledindicator_0_0_0_0
+  id: qtgui_ledindicator
+  parameters:
+    affinity: ''
+    alias: ''
+    cellalignment: '1'
+    comment: ''
+    gui_hint: ''
+    label: '"CTCSS"'
+    maxSize: '40'
+    offColor: gray
+    onColor: yellow
+    position: '1'
+    state: ctcss_status
+    verticalalignment: '3'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1888, 196.0]
+    rotation: 0
+    state: enabled
+- name: rpt
+  id: epy_module
+  parameters:
+    alias: ''
+    comment: ''
+    source_code: "# this module will be imported in the into your flowgraph\n\nimport\
+      \ math\nimport os\n\n###########################################################################\n\
+      #                       Global variable -> delay():                       #\n\
+      ###########################################################################\n\
+      \nt = 0\nf = 0\nd = 0\ngpo_status = 0\ntx = '3'\n###########################################################################\n\
+      #                      Global variable -> newrssi():                      #\n\
+      ###########################################################################\n\
+      \ng = 73\n\n\n###########################################################################\n\
+      #                             Funtion hang TX                             #\n\
+      ###########################################################################\n\
+      def hang(probe, delay):\n\tglobal t, f, d, gpo_status, tx\n\tif probe:\n\t\t\
+      probe = probe\n\telse:\n\t\tprobe = 0\n\n\tif probe != 0:\n\t\tt = 1\n\t\tf\
+      \ = 1\n\t\td = 0\n\t\tif gpo_status == 0:\n\t\t\tos.system('iio_attr -u ip:pluto.local\
+      \ -D ad9361-phy gpo_set  3-1')\n\t\t\tgpo_status = 1\n\telif f == 1 and probe\
+      \ == 0:\n\t\tif d < (delay):\n\t\t\td = d + 100\n\t\t\tt = 1\n\t\t\tf = 1\n\t\
+      \telse:\n\t\t\tt = 0\n\t\t\tf = 0\n\t\t\td = 0\n\t\t\tif gpo_status == 1:\n\t\
+      \t\t\tos.system('iio_attr -u ip:pluto.local -D ad9361-phy gpo_set 3-0')\n\t\t\
+      \t\tgpo_status = 0\n\treturn t\n\n############################################################################\n\
+      #\t\t\t     Function AGC regolate gain Pluto                          #\n############################################################################\n\
+      def agc(rssi):\n\tglobal g\n\tsa = math.trunc(rssi)\n\tif sa > -73:\n\t\tg =\
+      \ g - 6\n\telif sa < -88:\n\t\tif g <= 67:\n\t\t\tg = g + 6\n\t\telse:\n\t\t\
+      \tg = 73\n\telse:\n\t\tg = g\n\treturn g\n\n###########################################################################\n\
+      #\t\t\t     Function new RSSI with addition agc                      #\n###########################################################################\n\
+      def newrssi(s):\n\tglobal g\n\tss = math.trunc(s)\n\tns = ss + (73 - g)\n\t\
+      return ns\n\n###########################################################################\n\
+      #                         trigger status input                            #\n\
+      ###########################################################################\n\
+      def status(input):\n\tif input != 0:\n\t\treturn 1\n\telse:\n\t\treturn 0\n\n\
+      ###########################################################################\n\
+      #                         CTCSS enable disable                            #\n\
+      ###########################################################################\n\
+      def ctcss_en(input):\n\tif input > 0.0:\n\t\treturn 0\n\telse:\n\t\treturn 1\n\
+      \n###########################################################################\n\
+      #                                 END                                     #\n\
+      ###########################################################################\n"
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1384, 164.0]
+    rotation: 0
+    state: true
+- name: rssi
+  id: blocks_probe_signal_x
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    type: float
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [168, 968.0]
+    rotation: 180
+    state: true
+- name: uri
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: URI
+    short_id: ''
+    type: str
+    value: ip:pluto.local
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 100.0]
+    rotation: 0
+    state: enabled
+
+connections:
+- [analog_ctcss_squelch_ff_0, '0', blocks_selector_0_0, '0']
+- [analog_ctcss_squelch_ff_0, '0', prb_ctcssdec, '0']
+- [analog_nbfm_rx_0, '0', blocks_selector_0, '0']
+- [analog_nbfm_rx_0, '0', prb_nbfm_busy, '0']
+- [analog_nbfm_tx_0, '0', analog_pwr_squelch_xx_0, '0']
+- [analog_pwr_squelch_xx_0, '0', band_pass_filter_0_0_0, '0']
+- [analog_simple_squelch_cc_0, '0', analog_nbfm_rx_0, '0']
+- [band_pass_filter_0, '0', analog_nbfm_tx_0, '0']
+- [band_pass_filter_0_0, '0', analog_simple_squelch_cc_0, '0']
+- [band_pass_filter_0_0, '0', blocks_complex_to_mag_squared_0, '0']
+- [band_pass_filter_0_0_0, '0', iio_pluto_sink_0, '0']
+- [blocks_complex_to_mag_squared_0, '0', filter_fft_low_pass_filter_0, '0']
+- [blocks_freqshift_cc_0, '0', band_pass_filter_0_0, '0']
+- [blocks_nlog10_ff_0, '0', rssi, '0']
+- [blocks_selector_0, '0', analog_ctcss_squelch_ff_0, '0']
+- [blocks_selector_0, '1', blocks_selector_0_0, '1']
+- [blocks_selector_0_0, '0', band_pass_filter_0, '0']
+- [blocks_selector_0_0, '0', prb_bfbusy, '0']
+- [filter_fft_low_pass_filter_0, '0', blocks_nlog10_ff_0, '0']
+- [iio_pluto_source_0, '0', blocks_freqshift_cc_0, '0']
+
+metadata:
+  file_format: 1
