@@ -10,3 +10,5 @@ Feature system developement:
 
 It's possible change Paramenter on .ini file or small GUI interface.
 I hope this project can be an inspiration for someone and can grow and become something more.
+
+![alt text](https://github.com/lucamarche-iz1mlt/NBFM_Repeater/blob/main/Image/NBFM_Repeater%20GNUR%20diagram.jpg)
