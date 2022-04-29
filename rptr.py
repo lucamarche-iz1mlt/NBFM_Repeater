@@ -5,7 +5,7 @@
 # SPDX-License-Identifier: GPL-3.0
 #
 # GNU Radio Python Flow Graph
-# Title: NFM_Repeater
+# Title: NBFM_Repeater
 # GNU Radio version: 3.10.1.1
 
 from packaging.version import Version as StrictVersion
@@ -24,6 +24,7 @@ from PyQt5 import Qt
 from PyQt5.QtCore import QObject, pyqtSlot
 from gnuradio import eng_notation
 from gnuradio import analog
+from gnuradio import audio
 from gnuradio import blocks
 import math
 from gnuradio import filter
@@ -50,9 +51,9 @@ from gnuradio import qtgui
 class rptr(gr.top_block, Qt.QWidget):
 
     def __init__(self, uri='ip:pluto.local'):
-        gr.top_block.__init__(self, "NFM_Repeater", catch_exceptions=True)
+        gr.top_block.__init__(self, "NBFM_Repeater", catch_exceptions=True)
         Qt.QWidget.__init__(self)
-        self.setWindowTitle("NFM_Repeater")
+        self.setWindowTitle("NBFM_Repeater")
         qtgui.util.check_set_qss()
         try:
             self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))
@@ -89,6 +90,7 @@ class rptr(gr.top_block, Qt.QWidget):
         # Variables
         ##################################################
         self.func_rssi = func_rssi = 0
+        self.func_nbfm_busy = func_nbfm_busy = 0
         self._conf_hangtime_config = configparser.ConfigParser()
         self._conf_hangtime_config.read('./rptr.ini')
         try: conf_hangtime = self._conf_hangtime_config.getint('main', 'hangtime')
@@ -100,9 +102,10 @@ class rptr(gr.top_block, Qt.QWidget):
         except: conf_ctcss = 0.0
         self.conf_ctcss = conf_ctcss
         self.samp_bf = samp_bf = 16000
+        self.rx_status = rx_status = rpt.status(func_nbfm_busy)
         self.rs = rs = rpt.newrssi(func_rssi)
         self.pl_freq = pl_freq = conf_ctcss
-        self.func_nbfm_busy = func_nbfm_busy = 0
+        self.func_prb_beacon_busy = func_prb_beacon_busy = 0
         self.func_ctcssdec = func_ctcssdec = 0
         self.func_bfbusy = func_bfbusy = 0
         self.delay = delay = conf_hangtime
@@ -129,7 +132,6 @@ class rptr(gr.top_block, Qt.QWidget):
         self.sq_lvl = sq_lvl = conf_squelch
         self.shift = shift = 15000
         self.samp_rate = samp_rate = samp_bf*9
-        self.rx_status = rx_status = rpt.status(func_nbfm_busy)
         self.ptt = ptt = rpt.hang(func_bfbusy, delay)
         self.pluto_gain = pluto_gain = rpt.agc(func_rssi)
         self.oscref = oscref = conf_trxcal
@@ -139,7 +141,9 @@ class rptr(gr.top_block, Qt.QWidget):
         self.filter_wide = filter_wide = 7500
         self.ctcss_status = ctcss_status = rpt.status(func_ctcssdec)
         self.ctcss_en = ctcss_en = rpt.ctcss_en(pl_freq)
-        self.buffer = buffer = 8000
+        self.buffer = buffer = 8192
+        self.beacon_status = beacon_status = rpt.status(func_prb_beacon_busy)
+        self.beacon_att = beacon_att = rpt.beacon_att(rx_status)
         self.RSSI = RSSI = rs
 
         ##################################################
@@ -152,6 +156,7 @@ class rptr(gr.top_block, Qt.QWidget):
         self.prb_nbfm_busy = blocks.probe_signal_f()
         self.prb_ctcssdec = blocks.probe_signal_f()
         self.prb_bfbusy = blocks.probe_signal_f()
+        self.prb_beacon_busy = blocks.probe_signal_f()
         # Create the options list
         self._pl_freq_options = [0.0, 67.0, 71.9, 74.4, 77.0, 79.7, 82.5, 85.4, 88.5, 91.5, 94.8, 97.4, 100.0, 103.5, 107.2, 110.9, 114.8, 118.8, 123.0, 127.3, 131.8, 136.5, 141.3, 146.2, 151.4, 156.7, 162.2, 167.9, 173.8, 179.9, 186.2, 192.8, 203.5, 210.7, 218.1, 225.7, 233.6, 241.8, 250.3]
         # Create the labels list
@@ -180,6 +185,9 @@ class rptr(gr.top_block, Qt.QWidget):
         self._filter_wide_range = Range(4000, 12000, 1000, 7500, 50)
         self._filter_wide_win = RangeWidget(self._filter_wide_range, self.set_filter_wide, "Filter", "counter_slider", int, QtCore.Qt.Horizontal)
         self.top_layout.addWidget(self._filter_wide_win)
+        self.qtgui_ledindicator_0_0_0_0_0 = self._qtgui_ledindicator_0_0_0_0_0_win = qtgui.GrLEDIndicator("BEACON", "lime", "gray", beacon_status, 40, 1, 1, 2, self)
+        self.qtgui_ledindicator_0_0_0_0_0 = self._qtgui_ledindicator_0_0_0_0_0_win
+        self.top_layout.addWidget(self._qtgui_ledindicator_0_0_0_0_0_win)
         self.qtgui_ledindicator_0_0_0_0 = self._qtgui_ledindicator_0_0_0_0_win = qtgui.GrLEDIndicator("CTCSS", "yellow", "gray", ctcss_status, 40, 1, 1, 3, self)
         self.qtgui_ledindicator_0_0_0_0 = self._qtgui_ledindicator_0_0_0_0_win
         self.top_layout.addWidget(self._qtgui_ledindicator_0_0_0_0_win)
@@ -221,6 +229,21 @@ class rptr(gr.top_block, Qt.QWidget):
         _func_rssi_thread = threading.Thread(target=_func_rssi_probe)
         _func_rssi_thread.daemon = True
         _func_rssi_thread.start()
+        def _func_prb_beacon_busy_probe():
+          while True:
+
+            val = self.prb_beacon_busy.level()
+            try:
+              try:
+                self.doc.add_next_tick_callback(functools.partial(self.set_func_prb_beacon_busy,val))
+              except AttributeError:
+                self.set_func_prb_beacon_busy(val)
+            except AttributeError:
+              pass
+            time.sleep(1.0 / (10))
+        _func_prb_beacon_busy_thread = threading.Thread(target=_func_prb_beacon_busy_probe)
+        _func_prb_beacon_busy_thread.daemon = True
+        _func_prb_beacon_busy_thread.start()
         def _func_nbfm_busy_probe():
           while True:
 
@@ -275,8 +298,10 @@ class rptr(gr.top_block, Qt.QWidget):
         self.blocks_selector_0 = blocks.selector(gr.sizeof_float*1,0,ctcss_en)
         self.blocks_selector_0.set_enabled(True)
         self.blocks_nlog10_ff_0 = blocks.nlog10_ff(10, 1, -59)
+        self.blocks_multiply_const_vxx_0 = blocks.multiply_const_ff(beacon_att)
         self.blocks_freqshift_cc_0 = blocks.rotator_cc(2.0*math.pi*shift/samp_rate)
         self.blocks_complex_to_mag_squared_0 = blocks.complex_to_mag_squared(1)
+        self.blocks_add_xx_0 = blocks.add_vff(1)
         self.band_pass_filter_0_0_0 = filter.fir_filter_ccc(
             1,
             firdes.complex_band_pass(
@@ -307,6 +332,7 @@ class rptr(gr.top_block, Qt.QWidget):
                 100,
                 window.WIN_HAMMING,
                 6.76))
+        self.audio_source_0 = audio.source(samp_bf, '', True)
         self.analog_simple_squelch_cc_0 = analog.simple_squelch_cc(sq_lvl+59, 0.005)
         self.analog_pwr_squelch_xx_0 = analog.pwr_squelch_cc((int)(-ptt)*(100), 1e-4, 0, False)
         self.analog_nbfm_tx_0 = analog.nbfm_tx(
@@ -346,17 +372,21 @@ class rptr(gr.top_block, Qt.QWidget):
         self.connect((self.analog_nbfm_tx_0, 0), (self.analog_pwr_squelch_xx_0, 0))
         self.connect((self.analog_pwr_squelch_xx_0, 0), (self.band_pass_filter_0_0_0, 0))
         self.connect((self.analog_simple_squelch_cc_0, 0), (self.analog_nbfm_rx_0, 0))
+        self.connect((self.audio_source_0, 0), (self.blocks_multiply_const_vxx_0, 0))
+        self.connect((self.audio_source_0, 0), (self.prb_beacon_busy, 0))
         self.connect((self.band_pass_filter_0, 0), (self.analog_nbfm_tx_0, 0))
         self.connect((self.band_pass_filter_0_0, 0), (self.analog_simple_squelch_cc_0, 0))
         self.connect((self.band_pass_filter_0_0, 0), (self.blocks_complex_to_mag_squared_0, 0))
         self.connect((self.band_pass_filter_0_0_0, 0), (self.iio_pluto_sink_0, 0))
+        self.connect((self.blocks_add_xx_0, 0), (self.band_pass_filter_0, 0))
+        self.connect((self.blocks_add_xx_0, 0), (self.prb_bfbusy, 0))
         self.connect((self.blocks_complex_to_mag_squared_0, 0), (self.filter_fft_low_pass_filter_0, 0))
         self.connect((self.blocks_freqshift_cc_0, 0), (self.band_pass_filter_0_0, 0))
+        self.connect((self.blocks_multiply_const_vxx_0, 0), (self.blocks_add_xx_0, 1))
         self.connect((self.blocks_nlog10_ff_0, 0), (self.rssi, 0))
         self.connect((self.blocks_selector_0, 0), (self.analog_ctcss_squelch_ff_0, 0))
         self.connect((self.blocks_selector_0, 1), (self.blocks_selector_0_0, 1))
-        self.connect((self.blocks_selector_0_0, 0), (self.band_pass_filter_0, 0))
-        self.connect((self.blocks_selector_0_0, 0), (self.prb_bfbusy, 0))
+        self.connect((self.blocks_selector_0_0, 0), (self.blocks_add_xx_0, 0))
         self.connect((self.filter_fft_low_pass_filter_0, 0), (self.blocks_nlog10_ff_0, 0))
         self.connect((self.iio_pluto_source_0, 0), (self.blocks_freqshift_cc_0, 0))
 
@@ -383,6 +413,13 @@ class rptr(gr.top_block, Qt.QWidget):
         self.set_pluto_gain(rpt.agc(self.func_rssi))
         self.set_rs(rpt.newrssi(self.func_rssi))
 
+    def get_func_nbfm_busy(self):
+        return self.func_nbfm_busy
+
+    def set_func_nbfm_busy(self, func_nbfm_busy):
+        self.func_nbfm_busy = func_nbfm_busy
+        self.set_rx_status(rpt.status(self.func_nbfm_busy))
+
     def get_conf_hangtime(self):
         return self.conf_hangtime
 
@@ -404,6 +441,14 @@ class rptr(gr.top_block, Qt.QWidget):
         self.samp_bf = samp_bf
         self.set_samp_rate(self.samp_bf*9)
         self.band_pass_filter_0.set_taps(firdes.band_pass(1, self.samp_bf, 50, 3500, 100, window.WIN_HAMMING, 6.76))
+
+    def get_rx_status(self):
+        return self.rx_status
+
+    def set_rx_status(self, rx_status):
+        self.rx_status = rx_status
+        self.set_beacon_att(rpt.beacon_att(self.rx_status))
+        self.qtgui_ledindicator_0_0_0.setState(self.rx_status)
 
     def get_rs(self):
         return self.rs
@@ -427,12 +472,12 @@ class rptr(gr.top_block, Qt.QWidget):
         self._pl_freq_callback(self.pl_freq)
         self.analog_ctcss_squelch_ff_0.set_frequency(self.pl_freq)
 
-    def get_func_nbfm_busy(self):
-        return self.func_nbfm_busy
+    def get_func_prb_beacon_busy(self):
+        return self.func_prb_beacon_busy
 
-    def set_func_nbfm_busy(self, func_nbfm_busy):
-        self.func_nbfm_busy = func_nbfm_busy
-        self.set_rx_status(rpt.status(self.func_nbfm_busy))
+    def set_func_prb_beacon_busy(self, func_prb_beacon_busy):
+        self.func_prb_beacon_busy = func_prb_beacon_busy
+        self.set_beacon_status(rpt.status(self.func_prb_beacon_busy))
 
     def get_func_ctcssdec(self):
         return self.func_ctcssdec
@@ -522,13 +567,6 @@ class rptr(gr.top_block, Qt.QWidget):
         self.iio_pluto_sink_0.set_samplerate(self.samp_rate)
         self.iio_pluto_source_0.set_samplerate(self.samp_rate)
         self.iio_pluto_source_0.set_filter_params('Auto', '', (float)(self.samp_rate)/(4), (float)(self.samp_rate)/(3))
-
-    def get_rx_status(self):
-        return self.rx_status
-
-    def set_rx_status(self, rx_status):
-        self.rx_status = rx_status
-        self.qtgui_ledindicator_0_0_0.setState(self.rx_status)
 
     def get_ptt(self):
         return self.ptt
@@ -622,6 +660,20 @@ class rptr(gr.top_block, Qt.QWidget):
 
     def set_buffer(self, buffer):
         self.buffer = buffer
+
+    def get_beacon_status(self):
+        return self.beacon_status
+
+    def set_beacon_status(self, beacon_status):
+        self.beacon_status = beacon_status
+        self.qtgui_ledindicator_0_0_0_0_0.setState(self.beacon_status)
+
+    def get_beacon_att(self):
+        return self.beacon_att
+
+    def set_beacon_att(self, beacon_att):
+        self.beacon_att = beacon_att
+        self.blocks_multiply_const_vxx_0.set_k(self.beacon_att)
 
     def get_RSSI(self):
         return self.RSSI

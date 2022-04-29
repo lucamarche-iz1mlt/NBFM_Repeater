@@ -28,7 +28,7 @@ options:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 8]
+    coordinate: [0, 12.0]
     rotation: 0
     state: enabled
 
@@ -46,14 +46,38 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [288, 872.0]
+    coordinate: [288, 740.0]
     rotation: 0
     state: true
+- name: beacon_att
+  id: variable
+  parameters:
+    comment: ''
+    value: rpt.beacon_att(rx_status)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1840, 660.0]
+    rotation: 0
+    state: true
+- name: beacon_status
+  id: variable
+  parameters:
+    comment: ''
+    value: rpt.status(func_prb_beacon_busy)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2472, 28.0]
+    rotation: 0
+    state: enabled
 - name: buffer
   id: variable
   parameters:
     comment: ''
-    value: '8000'
+    value: '8192'
   states:
     bus_sink: false
     bus_source: false
@@ -172,7 +196,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1576, 484.0]
+    coordinate: [1576, 348.0]
     rotation: 0
     state: true
 - name: ctcss_status
@@ -184,7 +208,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1728, 196.0]
+    coordinate: [1952, 188.0]
     rotation: 0
     state: enabled
 - name: delay
@@ -226,7 +250,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1376, 12.0]
+    coordinate: [1616, 12.0]
     rotation: 0
     state: enabled
 - name: freq
@@ -263,7 +287,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1560, 20.0]
+    coordinate: [1784, 12.0]
     rotation: 0
     state: true
 - name: func_ctcssdec
@@ -279,7 +303,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1560, 212.0]
+    coordinate: [1784, 204.0]
     rotation: 0
     state: true
 - name: func_nbfm_busy
@@ -295,7 +319,23 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1544, 116.0]
+    coordinate: [1768, 108.0]
+    rotation: 0
+    state: true
+- name: func_prb_beacon_busy
+  id: variable_function_probe
+  parameters:
+    block_id: prb_beacon_busy
+    comment: ''
+    function_args: ''
+    function_name: level
+    poll_rate: '10'
+    value: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2304, 12.0]
     rotation: 0
     state: true
 - name: func_rssi
@@ -311,7 +351,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [128, 852.0]
+    coordinate: [128, 716.0]
     rotation: 0
     state: true
 - name: max_dev
@@ -414,7 +454,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [288, 752.0]
+    coordinate: [288, 620.0]
     rotation: 0
     state: true
 - name: ptt
@@ -426,7 +466,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1720, 68.0]
+    coordinate: [1944, 60.0]
     rotation: 0
     state: enabled
 - name: rs
@@ -438,7 +478,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [288, 816.0]
+    coordinate: [288, 684.0]
     rotation: 0
     state: true
 - name: rx_status
@@ -450,7 +490,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1720, 132.0]
+    coordinate: [1944, 124.0]
     rotation: 0
     state: enabled
 - name: samp_bf
@@ -528,7 +568,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1568, 564.0]
+    coordinate: [1568, 428.0]
     rotation: 0
     state: enabled
 - name: analog_nbfm_rx_0
@@ -547,7 +587,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [992, 652.0]
+    coordinate: [992, 516.0]
     rotation: 0
     state: enabled
 - name: analog_nbfm_tx_0
@@ -567,7 +607,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2336, 644.0]
+    coordinate: [2512, 508.0]
     rotation: 0
     state: enabled
 - name: analog_pwr_squelch_xx_0
@@ -587,7 +627,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2616, 652.0]
+    coordinate: [2792, 516.0]
     rotation: 0
     state: enabled
 - name: analog_simple_squelch_cc_0
@@ -604,7 +644,26 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [760, 668.0]
+    coordinate: [760, 532.0]
+    rotation: 0
+    state: enabled
+- name: audio_source_0
+  id: audio_source
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    device_name: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_outputs: '1'
+    ok_to_block: 'True'
+    samp_rate: samp_bf
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1632, 748.0]
     rotation: 0
     state: enabled
 - name: band_pass_filter_0
@@ -629,7 +688,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2072, 620.0]
+    coordinate: [2248, 484.0]
     rotation: 0
     state: enabled
 - name: band_pass_filter_0_0
@@ -654,7 +713,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [504, 620.0]
+    coordinate: [504, 484.0]
     rotation: 0
     state: enabled
 - name: band_pass_filter_0_0_0
@@ -679,7 +738,25 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2872, 620.0]
+    coordinate: [3048, 484.0]
+    rotation: 0
+    state: enabled
+- name: blocks_add_xx_0
+  id: blocks_add_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_inputs: '2'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2096, 528.0]
     rotation: 0
     state: enabled
 - name: blocks_complex_to_mag_squared_0
@@ -695,7 +772,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [712.0, 784]
+    coordinate: [712.0, 648]
     rotation: 270
     state: true
 - name: blocks_freqshift_cc_0
@@ -712,9 +789,27 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [272, 668.0]
+    coordinate: [272, 532.0]
     rotation: 0
     state: enabled
+- name: blocks_multiply_const_vxx_0
+  id: blocks_multiply_const_vxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    const: beacon_att
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1856, 724.0]
+    rotation: 0
+    state: true
 - name: blocks_nlog10_ff_0
   id: blocks_nlog10_ff
   parameters:
@@ -730,7 +825,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [344, 968.0]
+    coordinate: [344, 836.0]
     rotation: 180
     state: enabled
 - name: blocks_selector_0
@@ -753,7 +848,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1328, 644.0]
+    coordinate: [1328, 508.0]
     rotation: 0
     state: true
 - name: blocks_selector_0_0
@@ -776,7 +871,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1840, 644.0]
+    coordinate: [1840, 508.0]
     rotation: 0
     state: true
 - name: filter_fft_low_pass_filter_0
@@ -800,7 +895,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [472, 908.0]
+    coordinate: [488, 780.0]
     rotation: 180
     state: enabled
 - name: iio_pluto_sink_0
@@ -826,7 +921,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [3144, 620.0]
+    coordinate: [3320, 484.0]
     rotation: 0
     state: enabled
 - name: iio_pluto_source_0
@@ -857,9 +952,23 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [0, 596.0]
+    coordinate: [0, 460.0]
     rotation: 0
     state: true
+- name: prb_beacon_busy
+  id: blocks_probe_signal_x
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    type: float
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1856, 772.0]
+    rotation: 0
+    state: enabled
 - name: prb_bfbusy
   id: blocks_probe_signal_x
   parameters:
@@ -871,8 +980,8 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2012.0, 784]
-    rotation: 270
+    coordinate: [2180.0, 400]
+    rotation: 90
     state: enabled
 - name: prb_ctcssdec
   id: blocks_probe_signal_x
@@ -885,7 +994,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1840, 548.0]
+    coordinate: [1832, 412.0]
     rotation: 0
     state: enabled
 - name: prb_nbfm_busy
@@ -899,7 +1008,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1220.0, 512]
+    coordinate: [1220.0, 376]
     rotation: 90
     state: enabled
 - name: qtgui_ledindicator_0_0
@@ -921,7 +1030,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1888, 68.0]
+    coordinate: [2112, 60.0]
     rotation: 0
     state: enabled
 - name: qtgui_ledindicator_0_0_0
@@ -943,7 +1052,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1888, 132.0]
+    coordinate: [2112, 124.0]
     rotation: 0
     state: enabled
 - name: qtgui_ledindicator_0_0_0_0
@@ -965,7 +1074,29 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1888, 196.0]
+    coordinate: [2112, 188.0]
+    rotation: 0
+    state: enabled
+- name: qtgui_ledindicator_0_0_0_0_0
+  id: qtgui_ledindicator
+  parameters:
+    affinity: ''
+    alias: ''
+    cellalignment: '1'
+    comment: ''
+    gui_hint: ''
+    label: '"BEACON"'
+    maxSize: '40'
+    offColor: gray
+    onColor: lime
+    position: '1'
+    state: beacon_status
+    verticalalignment: '2'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2640, 28.0]
     rotation: 0
     state: enabled
 - name: rpt
@@ -1006,13 +1137,17 @@ blocks:
       ###########################################################################\n\
       def ctcss_en(input):\n\tif input > 0.0:\n\t\treturn 0\n\telse:\n\t\treturn 1\n\
       \n###########################################################################\n\
+      #              Audio beacon attenuation 20dB if RX is ON                  #\n\
+      ###########################################################################\t\
+      \t\ndef beacon_att(input):\n\tif input == 0:\n\t\treturn 1\n\telse:\n\t\treturn\
+      \ 0.1\n\n###########################################################################\n\
       #                                 END                                     #\n\
       ###########################################################################\n"
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1384, 164.0]
+    coordinate: [1624, 164.0]
     rotation: 0
     state: true
 - name: rssi
@@ -1026,7 +1161,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [168, 968.0]
+    coordinate: [168, 836.0]
     rotation: 180
     state: true
 - name: uri
@@ -1055,17 +1190,21 @@ connections:
 - [analog_nbfm_tx_0, '0', analog_pwr_squelch_xx_0, '0']
 - [analog_pwr_squelch_xx_0, '0', band_pass_filter_0_0_0, '0']
 - [analog_simple_squelch_cc_0, '0', analog_nbfm_rx_0, '0']
+- [audio_source_0, '0', blocks_multiply_const_vxx_0, '0']
+- [audio_source_0, '0', prb_beacon_busy, '0']
 - [band_pass_filter_0, '0', analog_nbfm_tx_0, '0']
 - [band_pass_filter_0_0, '0', analog_simple_squelch_cc_0, '0']
 - [band_pass_filter_0_0, '0', blocks_complex_to_mag_squared_0, '0']
 - [band_pass_filter_0_0_0, '0', iio_pluto_sink_0, '0']
+- [blocks_add_xx_0, '0', band_pass_filter_0, '0']
+- [blocks_add_xx_0, '0', prb_bfbusy, '0']
 - [blocks_complex_to_mag_squared_0, '0', filter_fft_low_pass_filter_0, '0']
 - [blocks_freqshift_cc_0, '0', band_pass_filter_0_0, '0']
+- [blocks_multiply_const_vxx_0, '0', blocks_add_xx_0, '1']
 - [blocks_nlog10_ff_0, '0', rssi, '0']
 - [blocks_selector_0, '0', analog_ctcss_squelch_ff_0, '0']
 - [blocks_selector_0, '1', blocks_selector_0_0, '1']
-- [blocks_selector_0_0, '0', band_pass_filter_0, '0']
-- [blocks_selector_0_0, '0', prb_bfbusy, '0']
+- [blocks_selector_0_0, '0', blocks_add_xx_0, '0']
 - [filter_fft_low_pass_filter_0, '0', blocks_nlog10_ff_0, '0']
 - [iio_pluto_source_0, '0', blocks_freqshift_cc_0, '0']
 
